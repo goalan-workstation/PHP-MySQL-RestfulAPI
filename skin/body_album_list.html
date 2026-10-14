@@ -1,0 +1,20 @@
+<!-- skin/body_album_list.html : 相簿列表 -->
+<section class="about-section" id="albumList">
+  <div class="about-section-head">
+    <h2>相簿</h2>
+    <nav><a href="{{HOME_URL}}">首頁</a> / 相簿</nav>
+  </div>
+  <div class="list-grid">
+    <!-- BEGIN ROW_ALBUM -->
+    <article class="card reveal">
+      <a href="{{DETAIL_URL}}">
+        <img src="{{ALBUM_PIC}}" alt="{{TITLE}}" loading="lazy" onerror="this.style.display='none';">
+        <h3>{{TITLE}}</h3>
+        <p class="meta">共 {{PHOTO_COUNT}} 張</p>
+      </a>
+    </article>
+    <!-- END ROW_ALBUM -->
+  </div>
+  <p class="empty-msg">{{EMPTY_MSG}}</p>
+  <nav class="pager">{{PAGE_NAV}}</nav>
+</section>

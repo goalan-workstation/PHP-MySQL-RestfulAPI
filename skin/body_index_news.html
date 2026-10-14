@@ -1,0 +1,18 @@
+<!-- skin/body_index_news.html : 首頁最新消息區塊 (3筆，直式按鈕) -->
+<section class="home-section" id="homeNews">
+  <div class="about-section-head">
+    <h2>最新消息</h2>
+    <nav><a href="{{NEWS_LIST_URL}}">更多消息 →</a></nav>
+  </div>
+  <div class="home-news-list">
+    <!-- BEGIN ROW_NEWS -->
+    <a class="home-news-item reveal" href="{{DETAIL_URL}}">
+      <span class="news-item-date">{{CREAT_TIME}}</span>
+      <span class="news-item-title">{{TITLE}}</span>
+      <span class="news-item-sub">{{TITLE_2}}</span>
+      <span class="news-item-arrow">→</span>
+    </a>
+    <!-- END ROW_NEWS -->
+  </div>
+  <p class="empty-msg">{{EMPTY_MSG}}</p>
+</section>

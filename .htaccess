@@ -1,0 +1,2 @@
+# 前台首頁為 index.html；index.php 僅作為 JSON API（由 index.html 以 fetch 呼叫）
+DirectoryIndex index.html

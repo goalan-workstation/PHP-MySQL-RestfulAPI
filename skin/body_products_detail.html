@@ -1,0 +1,62 @@
+<!-- skin/body_products_detail.html : 產品內頁 -->
+<section class="about-section" id="productDetail">
+  <div class="about-section-head" style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
+    <div>
+      <h2 style="margin-bottom:4px;">{{TITLE}}</h2>
+      <nav><a href="{{HOME_URL}}">首頁</a> / <a href="{{PRODUCTS_LIST_URL}}">產品</a> / 內文</nav>
+    </div>
+    <nav class="pager" style="margin:0;">{{PREV_NEXT_NAV}}</nav>
+  </div>
+  <p class="sub">{{TITLE_2}}</p>
+  <p><img src="{{PRODUCT_PIC}}" alt="{{TITLE}}" style="max-width:100%;border-radius:12px;" onerror="this.style.display='none';"></p>
+  <div id="photoSection" style="margin-top:16px">
+    <div id="productPhotoRow" class="product-photo-row">
+      <!-- BEGIN ROW_PHOTO -->
+      <img src="{{PHOTO_SRC}}" alt="{{TITLE}}" loading="lazy" data-idx="{{PHOTO_IDX}}" onerror="this.style.display='none';">
+      <!-- END ROW_PHOTO -->
+    </div>
+  </div>
+  <div class="about-content"><div class="about-text">{{DESCRIPTION}}</div></div>
+  <p class="price" style="font-size:20px;font-weight:700;color:var(--primary);">NT$ {{PRODUCT_PRICE}}</p>
+  <p class="meta">數量 {{PRODUCT_NUM}} / 已售 {{PRODUCT_RENUM}}</p>
+  <form method="post" action="{{ADD_CART_URL}}" style="margin-top:16px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+    <input type="hidden" name="csrf_token" value="{{CSRF_TOKEN}}">
+    <input type="hidden" name="product_id" value="{{PRODUCT_ID}}">
+    <label>數量 <input type="number" name="qty" value="1" min="1" max="{{PRODUCT_NUM}}" style="width:80px;padding:8px;"></label>
+    <button class="button button-primary" type="submit">加入購物車</button>
+    <a class="button button-secondary" href="{{BACK_URL}}">返回列表</a>
+  </form>
+</section>
+
+<!-- Lightbox Overlay（同相簿內頁） -->
+<div id="lightbox"
+  style="display:none;position:fixed;inset:0;z-index:9999;
+         background:rgba(0,0,0,0.93);align-items:center;justify-content:center;
+         flex-direction:column">
+  <!-- Close button -->
+  <button id="lbCloseBtn"
+    style="position:absolute;top:16px;right:16px;width:44px;height:44px;border-radius:50%;
+           border:none;background:rgba(255,255,255,0.1);color:#fff;font-size:20px;
+           cursor:pointer;z-index:2;display:flex;align-items:center;justify-content:center;
+           transition:background .2s">✕</button>
+  <!-- Left arrow -->
+  <button id="lbPrevBtn"
+    style="position:absolute;left:14px;top:50%;transform:translateY(-50%);width:50px;height:50px;
+           border-radius:50%;border:none;background:rgba(255,255,255,0.1);color:#fff;
+           font-size:32px;cursor:pointer;z-index:2;display:flex;align-items:center;justify-content:center;
+           transition:background .2s;line-height:1">‹</button>
+  <!-- Image -->
+  <img id="lbImg"
+    style="max-width:92vw;max-height:76vh;object-fit:contain;border-radius:10px;
+           box-shadow:0 10px 50px rgba(0,0,0,0.55);opacity:0;transition:opacity .3s;user-select:none">
+  <!-- Right arrow -->
+  <button id="lbNextBtn"
+    style="position:absolute;right:14px;top:50%;transform:translateY(-50%);width:50px;height:50px;
+           border-radius:50%;border:none;background:rgba(255,255,255,0.1);color:#fff;
+           font-size:32px;cursor:pointer;z-index:2;display:flex;align-items:center;justify-content:center;
+           transition:background .2s;line-height:1">›</button>
+  <!-- Counter -->
+  <div id="lbCounter"
+    style="position:absolute;bottom:20px;left:0;right:0;text-align:center;
+           color:rgba(255,255,255,0.45);font-size:13px;pointer-events:none;letter-spacing:.5px"></div>
+</div>

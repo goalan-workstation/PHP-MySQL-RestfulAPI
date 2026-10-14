@@ -1,0 +1,23 @@
+<!-- skin/body_products_list.html : 產品列表 -->
+<section class="about-section" id="productsList">
+  <div class="about-section-head">
+    <h2>產品</h2>
+    <nav><a href="{{HOME_URL}}">首頁</a> / 產品</nav>
+  </div>
+  <div class="list-grid">
+    <!-- BEGIN ROW_PRODUCT -->
+    <article class="card reveal">
+      <a href="{{DETAIL_URL}}">
+        <img src="{{PRODUCT_PIC}}" alt="{{TITLE}}" loading="lazy" onerror="this.style.display='none';">
+        <h3>{{TITLE}}</h3>
+        <p class="sub">{{TITLE_2}}</p>
+        <p class="price">NT$ {{PRODUCT_PRICE}}</p>
+        <p class="meta">數量 {{PRODUCT_NUM}} / 已售 {{PRODUCT_RENUM}}</p>
+      </a>
+      <p class="card-actions"><a class="button button-secondary" href="{{DETAIL_URL}}">詳細資料</a><a class="button button-primary add-cart-btn" href="#" data-pid="{{ADD_CART_PID}}">加入購物車</a></p>
+    </article>
+    <!-- END ROW_PRODUCT -->
+  </div>
+  <p class="empty-msg">{{EMPTY_MSG}}</p>
+  <nav class="pager">{{PAGE_NAV}}</nav>
+</section>

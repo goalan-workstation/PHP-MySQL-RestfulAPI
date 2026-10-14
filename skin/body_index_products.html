@@ -1,0 +1,21 @@
+<!-- skin/body_index_products.html : 首頁產品區塊 (最多5筆) -->
+<section class="home-section" id="homeProducts">
+  <div class="about-section-head">
+    <h2>精選產品</h2>
+    <nav><a href="{{PRODUCTS_LIST_URL}}">更多產品 →</a></nav>
+  </div>
+  <div class="home-grid">
+    <!-- BEGIN ROW_PRODUCT -->
+    <article class="card reveal">
+      <a href="{{DETAIL_URL}}">
+        <img src="{{PRODUCT_PIC}}" alt="{{TITLE}}" loading="lazy" onerror="this.style.display='none';">
+        <h3>{{TITLE}}</h3>
+        <p class="sub">{{TITLE_2}}</p>
+        <p class="price">NT$ {{PRODUCT_PRICE}}</p>
+      </a>
+      <p><a class="button button-primary product-detail-btn" href="{{DETAIL_URL}}">詳細內容</a></p>
+    </article>
+    <!-- END ROW_PRODUCT -->
+  </div>
+  <p class="empty-msg">{{EMPTY_MSG}}</p>
+</section>

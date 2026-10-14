@@ -1,0 +1,185 @@
+====================================================================
+  ALAN_PHP 前台架構整理（php + MySQL + Restful API）
+  最後整理：（前台大致完成版，取代舊版內容）
+====================================================================
+
+一、整體運作模式
+--------------------------------------------------------------------
+[瀏覽器] --fetch--> [PHP JSON API] --PDO--> [MySQL]
+  靜態 html 載入 skin/*.html 模板 + skin/*.php API，
+  JS 把 {{變數}} 填入模板渲染（無 server-side 渲染）。
+
+  - .htaccess：DirectoryIndex index.html（進目錄即開前台）
+  - 根目錄 index.php：RESTful JSON API（action=site / home），
+    為較舊入口；現在主要頁面邏輯已拆到 skin/*.php 各頁 API
+  - api_common.php：前台共用函式
+      frontendSiteBase()  -> 各 API 共用回傳（title/desc/banner/
+                            theme/blocks/cart_enabled/
+                            csrf_token/logged_in/member_name）
+      frontendCsrfToken() -> session 級前台 CSRF token
+      member helpers（session member_id / member_name）
+  - conn/conn.inc.php：MySQL PDO 連線（alan_php 資料庫）
+  - 權限規則（api_common 內建）：blocks.product 關閉時，
+    blocks.member 也強制關閉（產品區沒開，會員區不單獨開）
+
+二、目錄結構
+--------------------------------------------------------------------
+alan_php_mysql/
+├─ index.html ................. 主入口（首頁 + ?news ?activity
+│                              ?album ?products ?member ?member&edit
+│                              ?member&activate=CODE）→ preview.js
+├─ contactus.html ............. 聯絡我們頁 → contactus.js
+├─ shopping_cart.html ......... 購物車頁 → shopping_cart.js
+├─ index.php .................. JSON API（舊式入口，action 路由）
+├─ api_common.php ............. 前台共用 API 函式
+├─ conn/conn.inc.php .......... DB 連線
+├─ skin/ ........................ 前台模板 + 各頁 API
+│  ├─ top.html ................. 共用頂欄：導覽列 #topNav、購物車圖示、
+│  │                             avatar 下拉選單（登入表單／三顆按鈕）
+│  ├─ footer.html .............. 共用頁尾（版權年份自動更新）
+│  ├─ body_*.html .............. 各頁內文模板（{{VAR}} 填值）
+│  └─ body_*.php ............... 各頁 API（回傳 JSON）
+├─ assets/
+│  ├─ css/frontend.css ......... 前台樣式（--primary 等主題變數、
+│  │                             .button / .button-primary /
+│  │                             .button-secondary / .button-danger）
+│  ├─ js/preview.js ............ index.html 全部模式（最完整一份）
+│  ├─ js/contactus.js .......... 聯絡頁（獨立 renderChrome）
+│  ├─ js/shopping_cart.js ...... 購物車頁（獨立 renderChrome）
+│  ├─ js/news.js ............... 舊版多頁 JS，已無頁面引用（備查）
+│  └─ img/ ..................... 圖片素材
+├─ SYSTEM/ ...................... 後台管理（獨立登入，session admin_id）
+│  ├─ login.php / logout.php / list.php（後台框架）
+│  ├─ web_info/ ................ 網站基本設定（標題/描述/banner/
+│  │                             web_json_set 區塊開關）＋ banner_storage
+│  ├─ web_style/ ............... 主題樣式管理
+│  ├─ about_us/ news/ activity/ album(+album_sub)/
+│  │  product(+product_sub)/ member/ contact/ shopping_cart/
+│  │  ........................ 各模組 CRUD（list.php / edit.php）
+│  ├─ admin/ ................... 後台使用者管理
+│  └─ database/ ................ 所有建表 / 遷移 SQL
+└─ 前台製作文件/ ................ 說明文件
+
+三、資料庫表（alan_php）
+--------------------------------------------------------------------
+  web_info ........ 標題 / 描述 / 橫幅 web_img / web_json_set
+                   （JSON 區塊開關：news activity album product member）
+  web_style ....... 主題（淡藍等，primary/bg/light 色值）
+  news / activity / album / album_sub / products / product_sub
+                   .... 內容與多明細資料（各含 CHK 上架旗標）
+  member ............ 會員基本檔（member_name/email/phone/address，
+                   CHK：0 未啟用 / 1 正常 / 2 停用）
+  member_account .. 會員帳號（user_id + user_pwd bcrypt，
+                   與 member 以 id 關聯）
+  contact_us ........ 留言表單
+  shopping_cart ... 訂單（member_id / cart_code 唯一 / jason_cart /
+                   CHK 0未完成 1已完成 / view 已讀未讀）
+  login_attempts .. 登入失敗紀錄（鎖定用）
+  password_resets . 密碼重設 token
+  admin / admin_login_log .... 後台帳號與登入紀錄
+
+四、前端渲染流程（每個 html 頁相同骨架）
+--------------------------------------------------------------------
+  1. fetch skin/top.html + skin/footer.html + 該頁 body_*.html
+     + 該頁 body_*.php（JSON）
+  2. renderChrome(top, foot, api)：
+     - fill() 把 {{WEB_TITLE}}、{{CART_STYLE}}、{{AVATAR_STYLE}}、
+       {{CSRF_TOKEN}}、{{MEMBER_NAME}} 等替換進 top/footer
+     - 綁 avatar 下拉點擊開關
+     - initTopDropdown(api)：下拉選單登入／登出狀態切換
+     - applyBlockNav(api)：依 api.blocks 隱藏導覽列未啟用區塊
+  3. 該頁邏輯：expand() 展開 <!-- BEGIN ROW_x --> 清單模板，
+     fill() 填值，寫進 #slot-body
+
+  各頁對照：
+  ┌────────────────────────┬───────────────────┬──────────────────────┐
+  │ 網址                   │ 模板              │ API                  │
+  ├────────────────────────┼───────────────────┼──────────────────────┤
+  │ index.html（首頁）     │ body_index_*      │ index.php?action=home│
+  │ index.html?news        │ body_news_list    │ body_news_list.php   │
+  │ index.html?activity    │ body_activity_list│ body_activity_list   │
+  │ index.html?album       │ body_album_list   │ body_album_list      │
+  │ index.html?products    │ body_products_list│ body_products_list   │
+  │ index.html?member      │ body_member_list  │ body_member_list.php │
+  │ index.html?member&edit │ body_member_edit  │ 同上（action=edit）  │
+  │ contactus.html         │ body_contactus    │ body_contactus.php   │
+  │ shopping_cart.html     │ body_shopping_cart│ body_shopping_cart   │
+  └────────────────────────┴───────────────────┴──────────────────────┘
+
+
+五、右上角 avatar 下拉選單（skin/top.html）
+--------------------------------------------------------------------
+  未登入：登入表單（#loginForm）
+    - 前端預檢：帳號 ^[A-Za-z0-9._-]{4,20}$、密碼 >= 6 字
+    - POST skin/body_member_list.php?action=login（帶 csrf_token）
+    - 成功 location.reload()；失敗錯誤顯示在 #loginMsg
+  登入中：
+    - 「歡迎 <名稱>」：前段黑色、名稱用 var(--primary) 跟主題色
+    - 三顆按鈕直列置中：
+        修改會員資料 → index.html?member&edit（button-primary 主題底）
+        購買紀錄清單 → index.html?member   （button-primary 主題底）
+        登出         → POST action=logout 帶 csrf_token（button-danger 紅底）
+      登出成功 location.reload()
+    - 顯示／隱藏由 initTopDropdown(api) 依 api.logged_in 決定
+  圖示顯示規則：
+    - avatar 圖示：blocks.member（AVATAR_STYLE）
+    - 購物車圖示：blocks.product（CART_STYLE）
+
+六、驗證與安全規則
+--------------------------------------------------------------------
+  - 所有前台 POST 都要帶 API 回傳的 csrf_token（session 級）
+  - 登入驗證（後端）：帳號格式、密碼長度、member.CHK 啟用狀態、
+    連續 5 次失敗鎖 15 分鐘（login_attempts）
+  - 註冊：建 member + member_account（CHK=0 未啟用），
+    寄啟用信 → index.html?member&activate=CODE → body_member_list.php
+    ?activate=CODE 把 CHK 設 1
+  - 忘記密碼：action=forgot 寄重設連結（password_resets）
+  - 結帳（body_shopping_cart.php action=checkout）：
+      需登入；品項需上架（CHK=1）且庫存足夠
+      jason_cart 寫入格式：純陣列
+        [{"product":"產品名","quantity":數量}, ...]
+        （後台 shopping_cart/edit.php 逐列顯示產品名＋數量）
+      收件資料（姓名/信箱/電話/地址）未填則帶會員檔預設值，
+      四者都必填、email 驗格式
+      訂單編號沿用 session 那組，與 DB 重複就重產；結帳後清空 session 購物車
+  - 購買紀錄（會員頁清單）：shopping_cart 中 CHK=1（後台標「已完成」）
+    的訂單，依 creat_time 降序分頁；item_count 由 jason_cart 陣列長度算出
+
+七、區塊權限綁定（web_info.web_json_set）
+--------------------------------------------------------------------
+  後台「網站基本設定」可開關五個區塊：
+    最新消息 news / 最新活動 activity / 相簿 album /
+    產品 product / 會員 member
+  規則：勾「產品管理」→「會員管理」自動勾選且鎖定（不可取消）；
+       後端強制的同時，api_common 也會 product 關 → member 關。
+  前台依 api.blocks 自動隱藏（所有頁面都套用到）：
+    - 導覽列 #topNav 各 data-block 連結（applyBlockNav）
+    - 首頁對應 section（preview.js home 模式）
+    - 購物車圖示（blocks.product）、avatar 圖示（blocks.member）
+
+八、SESSION 使用
+--------------------------------------------------------------------
+  前台（瀏覽器）：
+    member_id / member_name .... 會員登入狀態
+    frontend_csrf_token ....... 前台 CSRF
+    frontend_cart ............. 購物車暫存
+      結構 { cart_code, items:{product_id:qty} }
+      加購時若無訂單編號會先產一組；結帳後清空（下次加購產新編號）
+  後台（SYSTEM）：
+    admin_id + 各模組 *_csrf_token
+  注意：前後台 session 同一 cookie 空間，各自獨立 key，互不干擾。
+
+九、後台（SYSTEM/）速覽
+--------------------------------------------------------------------
+  淡藍色管理介面：list.php（功能直排：基本設定/使用者管理/
+  最新消息/活動/相簿/產品/購物車/會員/聯絡/關於我們/主題）
+  各模組 list.php 分頁排序、edit.php 單筆 CRUD + CSRF，
+  圖片上傳走各模組 storage 目錄，
+  購物車管理可標「訂單完成 CHK=1」（前台購買紀錄才顯示）、
+  「已讀 view」、刪除訂單。
+
+
+
+====================================================================
+  以上
+====================================================================

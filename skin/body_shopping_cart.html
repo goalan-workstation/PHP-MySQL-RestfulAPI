@@ -1,0 +1,45 @@
+<!-- skin/body_shopping_cart.html : 購物車清單 -->
+<section class="about-section" id="shopCart">
+  <div class="about-section-head">
+    <h2>購物車</h2>
+    <nav><a href="{{HOME_URL}}">首頁</a> / 購物車</nav>
+  </div>
+  <p class="meta">訂單編號：{{CART_CODE}}</p>
+  <p class="form-message">{{MSG}}</p>
+  <div class="order-list">
+    <!-- BEGIN ROW_ITEM -->
+    <div class="card" style="margin-bottom:12px;padding:16px;display:flex;gap:16px;align-items:center;">
+      <a href="{{DETAIL_URL}}"><img src="{{PRODUCT_PIC}}" alt="{{PRODUCT_TITLE}}" style="width:80px;height:80px;object-fit:cover;border-radius:8px;" onerror="this.style.display='none';"></a>
+      <div style="flex:1;min-width:0;">
+        <p><a href="{{DETAIL_URL}}"><strong>{{PRODUCT_TITLE}}</strong></a></p>
+        <p class="meta">單價 NT$ {{PRICE}} x {{QTY}} = <strong>NT$ {{SUBTOTAL}}</strong></p>
+        <p class="cart-row-actions" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:8px;">
+          <label style="font-size:13px;">數量 <input type="number" value="{{QTY}}" min="0" data-qty-for="{{PRODUCT_ID}}" style="width:70px;padding:6px;"></label>
+          <button class="button button-secondary" type="button" data-update-for="{{PRODUCT_ID}}" style="padding:6px 12px;font-size:12px;">更新</button>
+          <button class="button button-secondary" type="button" data-remove-for="{{PRODUCT_ID}}" style="padding:6px 12px;font-size:12px;">移除</button>
+        </p>
+      </div>
+    </div>
+    <!-- END ROW_ITEM -->
+  </div>
+  <p class="empty-msg">{{EMPTY_MSG}}</p>
+  <p style="font-size:18px;font-weight:700;margin:16px 0;">總計：NT$ {{TOTAL}}</p>
+  <div id="checkoutArea" style="margin-top:24px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px;">
+    <h3 style="margin:0 0 16px;font-size:17px;">結帳資料</h3>
+    <p class="form-message" id="checkoutMsg"></p>
+    <form id="checkoutForm">
+      <input type="hidden" name="csrf_token" value="{{CSRF_TOKEN}}">
+      <div class="form-group"><label>收件人姓名</label><input type="text" name="order_name" value="{{ORDER_NAME}}" required></div>
+      <div class="form-group"><label>收件人信箱</label><input type="email" name="order_email" value="{{ORDER_EMAIL}}" required></div>
+      <div class="form-group"><label>收件人電話</label><input type="text" name="order_phone" value="{{ORDER_PHONE}}" required></div>
+      <div class="form-group"><label>收件地址</label><input type="text" name="order_address" value="{{ORDER_ADDRESS}}" required></div>
+      <p style="display:flex;gap:8px;flex-wrap:wrap;margin-top:16px;">
+        <button class="button button-primary" type="submit">確認結帳</button>
+        <a class="button button-secondary" href="{{PRODUCTS_LIST_URL}}">繼續購物</a>
+      </p>
+    </form>
+  </div>
+  <p style="display:flex;gap:8px;flex-wrap:wrap;margin-top:16px;">
+    <button class="button button-secondary" type="button" id="clearCartBtn">清空購物車</button>
+  </p>
+</section>

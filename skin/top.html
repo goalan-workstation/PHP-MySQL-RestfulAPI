@@ -1,0 +1,61 @@
+<!-- skin/top.html : 前台共用頂部 (Light Bar + Banner + 站名描述 + 開啟 container) -->
+<!-- 組裝順序: top.html + body_*.html + footer.html ; 變數格式 {{VAR}} 由 PHP str_replace 填入 -->
+<header class="light-bar">
+  <div class="light-bar-inner">
+    <nav class="light-bar-nav" id="topNav">
+      <a href="{{HOME_URL}}" class="light-bar-home" title="首頁">🏠 首頁</a>
+      <a href="{{NEWS_LIST_URL}}" data-block="news">最新消息</a>
+      <a href="{{ACTIVITY_LIST_URL}}" data-block="activity">最新活動</a>
+      <a href="{{ALBUM_LIST_URL}}" data-block="album">相簿</a>
+      <a href="{{PRODUCTS_LIST_URL}}" data-block="product">產品</a>
+      <a href="{{MEMBER_URL}}" data-block="member">會員專區</a>
+      <a href="{{CONTACT_URL}}">聯絡我們</a>
+    </nav>
+    <div class="light-bar-actions">
+      <span class="cart-icon-wrapper" style="{{CART_STYLE}}">
+        <!-- 購物車：依 api.cart_enabled 決定顯示/隱藏 -->
+        <a href="{{CART_URL}}" title="購物車">
+          <img class="cart-icon" src="{{CART_ICON}}" alt="購物車" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex';">
+          <span class="cart-fallback" style="display:none;">🛒</span>
+        </a>
+        <span class="cart-badge" id="cartBadge">{{CART_COUNT}}</span>
+      </span>
+      <span style="position:relative;">
+        <img class="avatar-icon" id="avatarIcon" src="{{AVATAR_ICON}}" alt="會員" style="{{AVATAR_STYLE}}">
+        <div class="avatar-dropdown" id="avatarDropdown" style="display:none;">
+          <div id="loginSection">
+            <form id="loginForm" method="post" action="{{LOGIN_URL}}">
+              <input type="hidden" name="csrf_token" value="{{CSRF_TOKEN}}">
+              <div class="form-group">
+                <label for="loginUser">帳號</label>
+                <input id="loginUser" name="user_id" type="text" autocomplete="username" required>
+              </div>
+              <div class="form-group">
+                <label for="loginPwd">密碼</label>
+                <input id="loginPwd" name="user_pwd" type="password" autocomplete="current-password" required>
+              </div>
+              <button class="button button-primary" type="submit">登入</button>
+              <p id="loginMsg" style="font-size:12px;color:var(--text-secondary);"></p>
+            </form>
+          </div>
+          <div id="logoutSection" style="display:none;">
+            <p style="color:#000;">歡迎 <strong id="memberName" style="color:var(--primary);">{{MEMBER_NAME}}</strong></p>
+            <p style="margin:12px 0;display:flex;flex-direction:column;gap:8px;align-items:stretch;text-align:center;">
+              <a class="button button-primary" href="{{MEMBER_EDIT_URL}}">修改會員資料</a>
+              <a class="button button-primary" href="{{MEMBER_URL}}">購買紀錄清單</a>
+              <a class="button button-danger" href="{{LOGOUT_URL}}" id="logoutBtn">登出</a>
+            </p>
+          </div>
+        </div>
+      </span>
+    </div>
+  </div>
+</header>
+<img class="banner" id="siteBanner" src="{{BANNER_SRC}}" alt="網站橫幅" style="{{BANNER_STYLE}}">
+<div class="container">
+  <header class="site-header">
+    <h1 class="site-title">{{WEB_TITLE}}</h1>
+    <p class="site-description">{{WEB_DESCRIPTION}}</p>
+    <div class="divider"></div>
+  </header>
+</div>

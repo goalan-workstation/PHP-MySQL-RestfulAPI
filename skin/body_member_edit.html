@@ -1,0 +1,26 @@
+<!-- skin/body_member_edit.html : 修改會員資料 -->
+<section class="about-section" id="memberEdit">
+  <div class="about-section-head">
+    <h2>修改會員資料</h2>
+    <nav><a href="{{HOME_URL}}">首頁</a> / <a href="{{MEMBER_URL}}">會員專區</a> / 修改資料</nav>
+  </div>
+  <div style="display:flex;gap:12px;flex-wrap:wrap;margin:12px 0 24px;">
+    <span class="button button-primary" style="cursor:default;">修改會員資料</span>
+    <a class="button button-secondary" href="{{MEMBER_URL}}">購買紀錄清單</a>
+    <a class="button button-secondary" href="skin/body_member_list.php?action=logout">登出</a>
+  </div>
+  <p class="form-message" id="editMsg" style="font-size:14px;margin:12px 0;min-height:20px;">{{MSG}}</p>
+  <form id="memberEditForm" class="contact-form">
+    <input type="hidden" name="csrf_token" value="{{CSRF_TOKEN}}">
+    <div class="form-group"><label for="member_name">暱稱</label><input id="member_name" name="member_name" type="text" value="{{MEMBER_NAME}}" required></div>
+    <div class="form-group"><label for="member_email">Email</label><input id="member_email" name="member_email" type="email" value="{{MEMBER_EMAIL}}"></div>
+    <div class="form-group"><label for="member_phone">電話 (非必填)</label><input id="member_phone" name="member_phone" type="text" value="{{MEMBER_PHONE}}"></div>
+    <div class="form-group"><label for="member_address">地址 (非必填)</label><input id="member_address" name="member_address" type="text" value="{{MEMBER_ADDRESS}}"></div>
+    <div class="form-group"><label for="user_pwd">新密碼 (不修改請留空)</label><input id="user_pwd" name="user_pwd" type="password" autocomplete="new-password"></div>
+    <div style="display:flex;gap:12px;margin-top:16px;">
+      <button class="button button-primary" type="submit">儲存</button>
+      <a class="button button-secondary" href="{{MEMBER_URL}}">返回會員專區</a>
+    </div>
+  </form>
+</section>
+

@@ -1,0 +1,44 @@
+<!-- skin/footer.html : 前台共用頁尾 (版權 + 前端互動) -->
+<footer class="footer">
+  <div class="container">
+    <p>© {{YEAR}} {{WEB_TITLE}} All Rights Reserved.</p>
+    <p class="meta">{{WEB_DESCRIPTION}}</p>
+  </div>
+</footer>
+<script>
+(function () {
+  var nav = document.getElementById("topNav");
+  var blocks = {{BLOCKS_JSON}};
+  if (nav && blocks) {
+    Array.prototype.forEach.call(nav.querySelectorAll("a[data-block]"), function (a) {
+      if (blocks[a.getAttribute("data-block")] === false) { a.style.display = "none"; }
+    });
+  }
+  var avatar = document.getElementById("avatarIcon");
+  var drop = document.getElementById("avatarDropdown");
+  var loginSec = document.getElementById("loginSection");
+  var logoutSec = document.getElementById("logoutSection");
+  var loggedIn = "{{LOGGED_IN}}" === "1";
+  if (avatar && drop) {
+    avatar.addEventListener("click", function (e) {
+      e.stopPropagation();
+      drop.style.display = drop.style.display === "none" ? "block" : "none";
+      if (loginSec && logoutSec) {
+        loginSec.style.display = loggedIn ? "none" : "block";
+        logoutSec.style.display = loggedIn ? "block" : "none";
+      }
+    });
+    document.addEventListener("click", function (e) {
+      if (!drop.contains(e.target)) { drop.style.display = "none"; }
+    });
+  }
+  var banner = document.getElementById("siteBanner");
+  if (banner) {
+    banner.addEventListener("error", function () { banner.style.display = "none"; });
+    if (!banner.getAttribute("src")) { banner.style.display = "none"; }
+  }
+  Array.prototype.forEach.call(document.querySelectorAll(".reveal"), function (el, i) {
+    setTimeout(function () { el.classList.add("visible"); }, 60 * i);
+  });
+})();
+</script>

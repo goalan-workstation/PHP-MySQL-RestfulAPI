@@ -1,0 +1,18 @@
+<!-- skin/body_contactus.html : 聯絡我們 -->
+<section class="contact-section" id="contactUs">
+  <div class="contact-section-head"><h2>聯絡我們</h2></div>
+  <p>有任何問題歡迎留言，我們會盡快回覆。</p>
+  <div class="contact-form-wrapper">
+    <p class="form-message">{{MSG}}</p>
+    <form class="contact-form" method="post" action="{{FORM_ACTION}}">
+      <input type="hidden" name="csrf_token" value="{{CSRF_TOKEN}}">
+      <div class="form-group"><label for="cName">姓名</label><input id="cName" name="name" type="text" value="{{NAME}}" required></div>
+      <div class="form-group"><label for="cEmail">Email</label><input id="cEmail" name="email" type="email" value="{{EMAIL}}" required></div>
+      <div class="form-group"><label for="cTitle">主旨</label><input id="cTitle" name="title" type="text" value="{{TITLE}}" required></div>
+      <div class="form-group"><label for="cContent">內容</label><textarea id="cContent" name="content" rows="6" required>{{CONTENT}}</textarea></div>
+      <button class="button button-primary" type="submit">送出訊息</button>
+    </form>
+    <p id="formStatus"></p>
+  </div>
+  <div class="contact-info" style="margin-top:24px;">{{CONTACT_INFO}}</div>
+</section>

@@ -1,0 +1,21 @@
+<!-- skin/body_activity_list.html : 最新活動列表 -->
+<section class="about-section" id="activityList">
+  <div class="about-section-head">
+    <h2>最新活動</h2>
+    <nav><a href="{{HOME_URL}}">首頁</a> / 最新活動</nav>
+  </div>
+  <div class="list-grid">
+    <!-- BEGIN ROW_ACTIVITY -->
+    <article class="card reveal">
+      <a href="{{DETAIL_URL}}">
+        <img src="{{ACTIVITY_PIC}}" alt="{{TITLE}}" loading="lazy" onerror="this.style.display='none';">
+        <h3>{{TITLE}}</h3>
+        <p class="sub">{{TITLE_2}}</p>
+        <p class="meta">{{CREAT_TIME}}</p>
+      </a>
+    </article>
+    <!-- END ROW_ACTIVITY -->
+  </div>
+  <p class="empty-msg">{{EMPTY_MSG}}</p>
+  <nav class="pager">{{PAGE_NAV}}</nav>
+</section>

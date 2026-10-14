@@ -1,0 +1,2 @@
+# SYSTEM 後台入口：/SYSTEM/ 自動顯示 login.php
+DirectoryIndex login.php

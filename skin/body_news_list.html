@@ -1,0 +1,19 @@
+<!-- skin/body_news_list.html : 最新消息列表片段 (直式按鈕 + 分頁) -->
+<section class="about-section" id="newsList">
+  <div class="about-section-head">
+    <h2>最新消息</h2>
+    <nav><a href="index.html">首頁</a> / 最新消息</nav>
+  </div>
+  <div class="news-list-btns">
+    <!-- BEGIN ROW_NEWS -->
+    <a class="news-btn-item reveal" href="{{DETAIL_URL}}">
+      <span class="news-btn-date">{{CREAT_TIME}}</span>
+      <span class="news-btn-title">{{TITLE}}</span>
+      <span class="news-btn-sub">{{TITLE_2}}</span>
+      <span class="news-btn-arrow">→</span>
+    </a>
+    <!-- END ROW_NEWS -->
+  </div>
+  <p class="empty-msg">{{EMPTY_MSG}}</p>
+  <nav class="pager">{{PAGE_NAV}}</nav>
+</section>

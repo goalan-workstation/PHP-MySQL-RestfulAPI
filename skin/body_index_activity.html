@@ -1,0 +1,24 @@
+<!-- skin/body_index_activity.html : 首頁最新活動區塊 (滑動輪播，單頁4筆) -->
+<section class="home-section" id="homeActivity">
+  <div class="about-section-head">
+    <h2>最新活動</h2>
+    <nav><a href="{{ACTIVITY_LIST_URL}}">更多活動 →</a></nav>
+  </div>
+  <div class="act-carousel" id="actCarousel">
+    <button class="act-arrow act-prev" id="actPrev" aria-label="上一頁">‹</button>
+    <div class="act-track" id="actTrack">
+      <!-- BEGIN ROW_ACTIVITY -->
+      <article class="card act-card">
+        <a href="{{DETAIL_URL}}">
+          <img src="{{ACTIVITY_PIC}}" alt="{{TITLE}}" loading="lazy" onerror="this.style.display='none';">
+          <h3>{{TITLE}}</h3>
+          <p class="sub">{{TITLE_2}}</p>
+          <p class="meta">{{CREAT_TIME}}</p>
+        </a>
+      </article>
+      <!-- END ROW_ACTIVITY -->
+    </div>
+    <button class="act-arrow act-next" id="actNext" aria-label="下一頁">›</button>
+  </div>
+  <p class="empty-msg">{{EMPTY_MSG}}</p>
+</section>

@@ -1,0 +1,19 @@
+<!-- skin/body_index_album.html : 首頁相簿區塊 (全部啟用相簿) -->
+<section class="home-section" id="homeAlbum">
+  <div class="about-section-head">
+    <h2>精選相簿</h2>
+    <nav><a href="{{ALBUM_LIST_URL}}">更多相簿 →</a></nav>
+  </div>
+  <div class="home-grid">
+    <!-- BEGIN ROW_ALBUM -->
+    <article class="card reveal">
+      <a href="{{DETAIL_URL}}">
+        <img src="{{ALBUM_PIC}}" alt="{{TITLE}}" loading="lazy" onerror="this.style.display='none';">
+        <h3>{{TITLE}}</h3>
+        <p class="meta">共 {{PHOTO_COUNT}} 張</p>
+      </a>
+    </article>
+    <!-- END ROW_ALBUM -->
+  </div>
+  <p class="empty-msg">{{EMPTY_MSG}}</p>
+</section>

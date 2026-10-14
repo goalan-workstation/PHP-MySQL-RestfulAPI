@@ -1,0 +1,13 @@
+<!-- skin/body_news_detail.html : 最新消息內容頁片段 -->
+<section class="about-section" id="newsDetail">
+  <div class="about-section-head">
+    <h2>{{TITLE}}</h2>
+    <nav><a href="index.html">首頁</a> / <a href="index.html?news">最新消息</a> / {{TITLE}}</nav>
+  </div>
+  <p class="news-meta">日期：{{CREAT_TIME}}</p>
+  <img id="newsPic" src="{{NEWS_PIC}}" alt="{{TITLE}}" style="max-width:100%;border-radius:8px;margin:12px 0;display:none;" onload="this.style.display='block';" onerror="this.style.display='none';">
+  <div class="news-content">{{DESCRIPTION}}</div>
+  <div class="back-wrap">
+    <a class="back-btn" href="{{BACK_URL}}">← 返回最新消息列表</a>
+  </div>
+</section>
