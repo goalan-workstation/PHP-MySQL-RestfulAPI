@@ -11,6 +11,13 @@ password hashing
 
 index.html 各區塊 skin\body_***.html
 
+測試空間展示頁面
+https://alan-php-mysql.ifree.page/
+
+測試空間後台
+https://alan-php-mysql.ifree.page/SYSTEM/login.php
+測試帳號:test 密碼:testtest
+
 前台架構說明文件
 https://alan-php-mysql.ifree.page/%E5%89%8D%E5%8F%B0%E6%9E%B6%E6%A7%8B%E8%AA%AA%E6%98%8E.txt
 
